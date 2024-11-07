@@ -93,9 +93,6 @@ export default function Login() {
                     >
                         {loginSpinner ? "Logging in..." : "Login"}
                     </button>
-                    <Link to="/register" className="block text-center mt-4 text-blue-600">
-                        Don't have an account? Register
-                    </Link>
                 </form>
             </main>
         </section>
