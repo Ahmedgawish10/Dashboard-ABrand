@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
   }, [auth.currentUser]);
 
   if (loading) {
-    return <>...</>;
+    return ;
   }
   if (user) {  
       

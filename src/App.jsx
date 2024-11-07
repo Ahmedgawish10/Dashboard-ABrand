@@ -24,11 +24,11 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element:<MainLayout/>,
+      element:<ProtectedRoute><MainLayout /></ProtectedRoute>,
       children: [
         {
           index: true,
-          element:<ProtectedRoute><Home /></ProtectedRoute>,
+          element:<Home />,
         },
         {
           path: "users",
