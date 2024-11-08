@@ -11,86 +11,77 @@ const Datatable = () => {
   const [usersId,setUsersId]=useState([]);
   useEffect(() => {
     // LISTEN (REALTIME)
-    const getAllUsers = onSnapshot( collection(db, "users"),
+    const getAllProducts = onSnapshot( collection(db, "products"),
       (snapShot) => {
-        let usersList = [];
-        let usersListIds = []; // Local variable for user IDs
+        let productsList = [];
 
         snapShot.docs.forEach((doc) => {
-          usersList.push({ id: doc.id, ...doc.data() });
-          usersListIds.push(doc.id); // Store the actual user ID
+          productsList.push({ id: doc.id, ...doc.data() });
         });
 
-        setData(usersList);
-        setUsersId(usersListIds);         
+        setData(productsList);
+        console.log(productsList);
+        
       },
       (error) => {
         console.log(error);
       }
     );
    return ()=>{
-      getAllUsers()
+    getAllProducts()
     }
   }, []);
 
-
-
-
-
-
-  const handleDeleteUser = async (userId) => {
-              if(userId){
+  const handleDeleteProduct= async (productId) => {
+              if(productId){
                 toast.error("this action not allowed just for SuperAdmin");
                 return;
               }
     try {
       // Delete user document from Firestore(from collection)
-      await deleteDoc(doc(db, "users", userId));
+      let delteProduct= await deleteDoc(doc(db, "users", productId));
       // Check if the authenticated user is the same as the one being deleted
-      if ( usersId.includes(userId)) {
-        await auth.currentUser.delete();
+      if ( delteProduct) {
+        console.log("productId deleted only from Firestore.");
+      } 
   
-      } else {
-        console.log("User deleted only from Firestore.");
-      }
-  
-      setData(data.filter((user) => user?.id !== userId));
+      setData(data.filter((product) => product?.id !== productId));
     } catch (err) {
-      console.error("Error deleting user:", err);
+      console.error("Error deleting product:", err);
     }
   };
 
 
-  const userColumns = [
+  const productColumns = [
     { field: "id", headerName: "ID", width: 70 },
     {
-      field: "user",
-      headerName: "User",
+      field: "Product",
+      headerName: "Product",
       width: 180,
       renderCell: (params) => (
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.img} alt="avatar" />
-          {params.row.username} ali gawish
+          <img className="cellImg" src={params.row.image} alt="avatar" />
+          {params.row.name} 
         </div>
       ),
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "Category",
+      headerName: "Category",
       width: 200,
       renderCell: (params) => (
-        <div className={`text-ellipsis cellWithStatus ${params.row.email}`}>
-          {params.row.email}
+        <div className={`text-ellipsis cellWithStatus ${params.row.category}`}>
+          {params.row.category}
         </div>
       ),
     },
     {
-      field: "country",
-      headerName: "Country",
+      field: "Price",
+      headerName: "Price",
       width: 100,
       renderCell: (params) => (
-        <div className={`text-ellipsis cellWithCountry ${params.row.country}`}>
-          {params.row.country}
+        <div className={`text-ellipsis cellWithCountry ${params.row.Price}`}>
+          {params.row.price}
         </div>
       ),
     },
@@ -100,12 +91,12 @@ const Datatable = () => {
       width: 200,
       renderCell: (params) => (
         <div className="cellAction ">
-          <Link to="/users/userId" style={{ textDecoration: "none" }}>
+          <Link to="/products/userId" style={{ textDecoration: "none" }}>
             <div className="viewButton text-red-500">View</div>
           </Link>
           <div
             className="deleteButton"
-            onClick={() => handleDeleteUser(params.row.id)}
+            onClick={() => handleDeleteProduct(params.row.id)}
           >
             Delete
           </div>
@@ -126,7 +117,7 @@ const Datatable = () => {
       <DataGrid
         className="datagrid 55"
         rows={data}
-        columns={userColumns}
+        columns={productColumns}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

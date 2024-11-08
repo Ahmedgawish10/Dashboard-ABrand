@@ -2,7 +2,7 @@ import "./single.css";
 import Chart from "../../home/chart/Chart";
 import List from "../../home/tableTransaction/Table";
 
-const SingleUser = () => {
+const SingleProduct = () => {
   return (
     <div className="single">
       <div className="singleContainer">
@@ -52,4 +52,4 @@ const SingleUser = () => {
   );
 };
 
-export default SingleUser;
+export default SingleProduct;

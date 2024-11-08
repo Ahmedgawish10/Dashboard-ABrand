@@ -3,6 +3,9 @@ import Login from "./pages/login/Login";
 import Users from "./pages/users/Users";
 import GetSingleUser from "./pages/users/single/SingleUser";
 import AddNewUser from "./pages/users/new/AddNewUser";
+import Products from "./pages/products/Products";
+import GetSingleProduct from "./pages/products/single/SingleProduct";
+import AddNewProduct from "./pages/products/new/AddNewProduct";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { productInputs, addNewUserInps } from "./formSource";
 import "./style/dark.css";
@@ -52,15 +55,15 @@ function App() {
           children: [
             {
               index: true,
-              element: <Users />,
+              element: <Products />,
             },
             {
               path: ":productId",
-              element: <GetSingleUser />,
+              element: <GetSingleProduct />,
             },
             {
               path: "new",
-              element: <AddNewUser inputs={productInputs} title="Add New Product" />,
+              element: <AddNewProduct inputs={productInputs} title="Add New Product" />,
             },
           ],
         },

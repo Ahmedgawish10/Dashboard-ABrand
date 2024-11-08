@@ -1,9 +1,10 @@
 import "./list.css"
-import Datatable from "../users/usersData/Datatable"
-
+import Datatable from "../products/productsData/Datatable"
+import Ts from "../products/Ts"
 const List = () => {
   return (
       <div className="listContainer h-[100vh]">
+        {/* <Ts/> */}
         <Datatable/>
         
     </div>
