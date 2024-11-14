@@ -16,14 +16,7 @@ import MainLayout from "./layout/MainLayout";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 function App() {
-  const { darkMode } = useContext(DarkModeContext);
-
-  useEffect(() => {
-    console.log(auth.currentUser);
-  }, [auth.currentUser]);
-
-
-  
+  const { darkMode } = useContext(DarkModeContext);  
   const router = createBrowserRouter([
     {
       path: "/",

@@ -19,9 +19,7 @@ const Datatable = () => {
           productsList.push({ id: doc.id, ...doc.data() });
         });
 
-        setData(productsList);
-        console.log(productsList);
-        
+        setData(productsList);        
       },
       (error) => {
         console.log(error);
@@ -36,15 +34,10 @@ const Datatable = () => {
               if(productId){
                 toast.error("this action not allowed just for SuperAdmin");
                 return;
-              }
+              }              
     try {
       // Delete user document from Firestore(from collection)
-      let delteProduct= await deleteDoc(doc(db, "users", productId));
-      // Check if the authenticated user is the same as the one being deleted
-      if ( delteProduct) {
-        console.log("productId deleted only from Firestore.");
-      } 
-  
+      let delteProduct= await deleteDoc(doc(db, "products", productId));
       setData(data.filter((product) => product?.id !== productId));
     } catch (err) {
       console.error("Error deleting product:", err);
@@ -59,8 +52,10 @@ const Datatable = () => {
       headerName: "Product",
       width: 180,
       renderCell: (params) => (
+        // console.log(params)
+        
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.image} alt="avatar" />
+          <img className="cellImg" src={params.row.imageUrl} alt="avatar" />
           {params.row.name} 
         </div>
       ),
@@ -109,9 +104,9 @@ const Datatable = () => {
     <div className="datatable  ">
 
       <div className="datatableTitle">
-        Add New User
-        <Link to="/users/addUser" className="link">
-          Add New
+        Add New Product
+        <Link to="/products/new" className="link">
+          Add Product
         </Link>
       </div>
       <DataGrid

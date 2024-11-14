@@ -69,7 +69,7 @@ const Datatable = () => {
       width: 180,
       renderCell: (params) => (
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.img} alt="avatar" />
+          <img className="cellImg" src={params.row.profileImage} alt="avatar" />
           {params.row.username} 
         </div>
       ),
@@ -120,7 +120,7 @@ const Datatable = () => {
       <div className="datatableTitle">
         Add New User
         <Link to="/users/addUser" className="link">
-          Add New
+          Add User
         </Link>
       </div>
       <DataGrid

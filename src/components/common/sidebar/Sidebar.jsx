@@ -5,11 +5,8 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../../context/darkModeContext";
@@ -27,7 +24,6 @@ const Sidebar = ({toggleMenu}) => {
       <hr />
       <div className="center">
         <ul>
-          <p className="title">MAIN</p>
           <li>
             <DashboardIcon className="icon" />
             <Link to="/" style={{ textDecoration: "none" }}>
@@ -47,14 +43,18 @@ const Sidebar = ({toggleMenu}) => {
               <span>Products</span>
             </li>
           </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
           <li>
             <CreditCardIcon className="icon" />
             <span>Orders</span>
           </li>
+          </Link> 
+          <Link to="/" style={{ textDecoration: "none" }}>
           <li>
             <LocalShippingIcon className="icon" />
             <span>Delivery</span>
           </li>
+          </Link>
           <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />

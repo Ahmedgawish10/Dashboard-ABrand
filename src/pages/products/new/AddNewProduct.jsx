@@ -1,78 +1,61 @@
 import "./new.css";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useEffect, useState } from "react";
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { addDoc, collection, doc, serverTimestamp, setDoc, } from "firebase/firestore";
 import { auth, db, storage } from "../../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import Ts from "../Ts"
+import toast from "react-hot-toast";
+
 const AddNewProduct = ({ inputs, title }) => {
   const [file, setFile] = useState(null);
   const [data, setData] = useState({});
-  const [per, setPerc] = useState(null);
+  const [progress, setProgress] = useState(null);
   const navigate = useNavigate()
-  useEffect(() => {
-    const uploadFile = () => {
-      // Generate a unique name using a timestamp and a random identifier
-      const uniqueName = `${new Date().getTime()}-${Math.random().toString(36).substring(2, 15)}-${file.name}`;
+  const handleUpload = (e) => {
+    e.preventDefault()
+    // check if all required fields are filled and a file is uploaded
+    if (file == null || Object.keys(data).length < inputs.length) {
+      toast.error("All fields are required");
+      return;
+    }
 
-      const storageRef = ref(storage, `products/${uniqueName}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-              
-      uploadTask.on("state_changed", (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setPerc(progress.toFixed(0));          
-        },(error) => {
-          console.log(error);
-        },(getImageUrl) => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setData((prev) => ({ ...prev, img: downloadURL }));
-            
+    const storageRef = ref(storage, `productsImages/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress.toFixed());
+      },
+      (error) => {
+        console.error('Upload failed', error);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        try {
+          await addDoc(collection(db, 'products'), {
+            ...data,
+            imageUrl: downloadURL,
+            createdAt: new Date()
           });
+          // Redirect to products after saving
+          toast.success("Product created successfully")
+          navigate('/products');
+        } catch (error) {
+          console.error("Error saving to Firestore", error);
         }
-      );
-    };
-    file && uploadFile();
-  }, [file]);
-  
+      }
+    );
+  };
 
-
-  const handleInputsUpload = (e) => {
+  const handleInputsChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
     setData({ ...data, [name]: value });
-    console.log(data);
-        
+
   };
-
-  const addNewUser = async (e) => {
-    const currencySymbols = [{USD: "$",EUR: "€",GBP: "£",EGP: "£",JPY: "¥",INR: "₹",AUD:"A$",CAD:"C$"}]
-    e.preventDefault();
-    try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-
-      await setDoc(doc(db, "users", res.user.uid), {
-        ...data,
-        timeStamp: serverTimestamp(),
-      });
-      navigate("/users")
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div className="new h-[100vh]">
       <div className="newContainer">
@@ -89,12 +72,12 @@ const AddNewProduct = ({ inputs, title }) => {
               }
               alt="add imgae user"
             />
-                        <div className="text-green-500 pt-5">   {per?` image uploaded${per}%`:"...."}            </div>
+            <div className="text-green-500 pt-5">   {progress ? ` image uploaded${progress}%` : "...."}            </div>
 
 
           </div>
           <div className="right">
-            <form onSubmit={addNewUser} className="flex !justify-between"> 
+            <form onSubmit={handleUpload}>
               <div className="formInput ">
                 <label htmlFor="file" className=" h-[100%] cursor-pointer">
                   Image: <DriveFolderUploadOutlinedIcon className="icon" />
@@ -104,36 +87,24 @@ const AddNewProduct = ({ inputs, title }) => {
                   id="file"
                   name="file"
                   onChange={(e) => setFile(e.target.files[0])}
-                  style={{ display: "none",outline:"none" }}
+                  style={{ display: "none" }}
                 />
               </div>
-              <div className="formInput flex  flex-col ">
-                <label htmlFor="file" className=" h-[100%] cursor-pointer">
-                  Select Currency Product
-                </label> 
-                         <Ts/>
-              </div>
 
-              {inputs.map((input,index) => (
-                <div className="formInput" key={index}>
+              {inputs.map((input) => (
+                <div className="formInput" key={input.name}>
                   <label>{input.label}</label>
                   <input
                     name={input.name}
                     type={input.type}
                     placeholder={input.placeholder}
-                    onChange={handleInputsUpload}
-                    style={{ outline:"none" }}
-
+                    onChange={handleInputsChange}
                   />
                 </div>
               ))}
-                   <div className="formInput " >
-                              <button disabled={per !== null && per < 100} type="submit"  className="formSubmit !w-[100%]" >
+              <button disabled={progress !== null && progress < 100} type="submit">
                 Add
               </button>
-                                </div>
-
-           
             </form>
           </div>
         </div>
@@ -143,3 +114,7 @@ const AddNewProduct = ({ inputs, title }) => {
 };
 
 export default AddNewProduct;
+
+
+
+

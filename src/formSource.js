@@ -33,31 +33,36 @@ export const addNewUserInps = [
   export const productInputs = [
     {
       id: 1,
-      label: "Title",
+      name: "name",
+      label: "Name",
       type: "text",
       placeholder: "Apple Macbook Pro",
     },
     {
       id: 2,
       label: "Description",
+      name: "description",
       type: "text",
       placeholder: "Description",
     },
     {
       id: 3,
       label: "Category",
+      name: "category",
       type: "text",
       placeholder: "Computers",
     },
     {
       id: 4,
       label: "Price",
+      name: "price",
       type: "text",
       placeholder: "100",
     },
     {
       id: 5,
       label: "Stock",
+      name: "Stock",
       type: "text",
       placeholder: "in stock",
     },
