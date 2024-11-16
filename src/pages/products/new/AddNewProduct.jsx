@@ -51,9 +51,11 @@ const AddNewProduct = ({ inputs, title }) => {
   };
 
   const handleInputsChange = (e) => {
+    
     const name = e.target.name;
-    const value = e.target.value;
-    setData({ ...data, [name]: value });
+    const value = e.target.value.toLowerCase();
+    
+    setData({ ...data, [name]: value});
 
   };
   return (
