@@ -13,13 +13,13 @@ const AddNewProduct = ({ inputs, title }) => {
   const [progress, setProgress] = useState(null);
   const navigate = useNavigate()
   const handleUpload = (e) => {
+    
     e.preventDefault()
     // check if all required fields are filled and a file is uploaded
-    if (file == null || Object.keys(data).length < inputs.length) {
+    if (file == null || Object.keys(data).length < inputs.length || !data.category ) {
       toast.error("All fields are required");
       return;
     }
-
     const storageRef = ref(storage, `productsImages/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -50,8 +50,7 @@ const AddNewProduct = ({ inputs, title }) => {
     );
   };
 
-  const handleInputsChange = (e) => {
-    
+  const handleInputsChange = (e) => {    
     const name = e.target.name;
     const value = e.target.value.toLowerCase();
     
@@ -104,6 +103,17 @@ const AddNewProduct = ({ inputs, title }) => {
                   />
                 </div>
               ))}
+
+      <select
+        name="category"
+        onChange={handleInputsChange}
+      >
+        <option value="">Select a category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Sports">Sports</option>
+        <option value="Books">Books </option>
+        <option value="Fashion">Fashion  </option>
+      </select>
               <button disabled={progress !== null && progress < 100} type="submit">
                 Add
               </button>

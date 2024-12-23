@@ -86,7 +86,7 @@ const Datatable = () => {
       width: 200,
       renderCell: (params) => (
         <div className="cellAction ">
-          <Link to="/products/userId" style={{ textDecoration: "none" }}>
+          <Link to="/products" style={{ textDecoration: "none" }}>
             <div className="viewButton text-red-500">View</div>
           </Link>
           <div

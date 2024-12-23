@@ -10,15 +10,15 @@ const Datatable = () => {
   const [data, setData] = useState([]);
   const [usersId,setUsersId]=useState([]);
   useEffect(() => {
-    // LISTEN (REALTIME)
+    // REALTIME for users get
     const getAllUsers = onSnapshot( collection(db, "users"),
       (snapShot) => {
         let usersList = [];
-        let usersListIds = []; // Local variable for user IDs
+        let usersListIds = []; 
 
         snapShot.docs.forEach((doc) => {
           usersList.push({ id: doc.id, ...doc.data() });
-          usersListIds.push(doc.id); // Store the actual user ID
+          usersListIds.push(doc.id); 
         });
 
         setData(usersList);
@@ -33,23 +33,16 @@ const Datatable = () => {
     }
   }, []);
 
-
-
-
-
-
   const handleDeleteUser = async (userId) => {
               if(userId){
                 toast.error("this action not allowed just for SuperAdmin");
                 return;
               }
     try {
-      // Delete user document from Firestore(from collection)
       await deleteDoc(doc(db, "users", userId));
-      // Check if the authenticated user is the same as the one being deleted
       if ( usersId.includes(userId)) {
         await auth.currentUser.delete();
-  
+
       } else {
         console.log("User deleted only from Firestore.");
       }
@@ -100,7 +93,7 @@ const Datatable = () => {
       width: 200,
       renderCell: (params) => (
         <div className="cellAction ">
-          <Link to="/users/userId" style={{ textDecoration: "none" }}>
+          <Link to="/users" style={{ textDecoration: "none" }}>
             <div className="viewButton text-red-500">View</div>
           </Link>
           <div

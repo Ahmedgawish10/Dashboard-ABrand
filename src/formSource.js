@@ -46,13 +46,6 @@ export const addNewUserInps = [
       placeholder: "Description",
     },
     {
-      id: 3,
-      label: "Category",
-      name: "category",
-      type: "text",
-      placeholder: "Computers",
-    },
-    {
       id: 4,
       label: "Price",
       name: "price",
